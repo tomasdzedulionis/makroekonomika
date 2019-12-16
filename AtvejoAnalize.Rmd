@@ -1,0 +1,465 @@
+---
+title: "Japonijos ekonomika ir Abenomika"
+author: | 
+  | Tomas Dzedulionis
+  | Vilniaus universitetas Ekonomikos ir verslo administravimo fakultetas
+date: "16/12/2019"
+output:
+  pdf_document:
+    fig_caption: yes
+    fig_width: 6
+    fig_height: 3
+    number_sections: true
+    toc: true 
+    toc_depth: 3
+    highlight: tango
+    includes:
+      in_header: header_lt_text.txt
+bibliography: bibliography.bib
+geometry: "left=3cm,right=3cm,top=2cm,bottom=2cm"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, warning = FALSE, message = FALSE)
+```
+
+\newpage
+#Įvadas
+##Darbo objektas
+**Darbo objektas** - Japonijos ekonomika ir Abenomika.
+
+##Darbo tikslas
+**Darbo tikslas** - Išnagrinėti Japonijos ekonomikos istoriją, sudėtį, augimo priežastis. Išanalizuoti Japonijos fiskalinėje, monetarinėje ir kitose politikos srityse priimtus sprendimus (Abenomika) nuo Shinzo Abe tapimu Japonijos ministru pirmininkus bei apžvelgti priimtų sprendimų įtaką ir poveikį ekonomikai.
+
+##Darbo uždaviniai
+**Darbo uždaviniai**:
+
+* Išnagrinėti Japonijos ekonomikos istoriją, sudėtį, augimo priežastis.
+* Ianalizuoti Abenomikos įrankius ir apžvelgti pasekmes.
+
+##Darbo aktualumas
+
+Japonijos ekonomika ir jos intensyvus augimas nuo pokario ilgus metus buvo pavyzdys viso pasaulio valstybėms. Šios valstybės ekonomika pokario metais (1952-1973m.) išgyveno tvarų vidutiniškai 10proc. siekiantį augimą kasmet, ko pasekoje 1973m. Japonijos BVP buvo 6-is kartus didesnis nei 1952m. [@yoshino2014analysis] Pastaruoju metu Japonijos ekonomika susidūrė su problemomis, tokiomis kaip stagnacija, defliacija ar senėjanti visuomenė, tačiau 2012m. premjeru išrinktas Shinzo Abe ir jo siūlytos priemonės padeda Japonijai atsigauti. Kadangi Japonija yra 3-ia didžiausia ekonomika pasaulyje, jos įtaka pasaulinei rinkai nenuginčijama. 
+
+##Darbe naudojami metodai
+Šiai analizei atlikti bus naudojami įvairūs moksliniai šaltiniai bei kiekybiniai duomenys, kurių apdorojimui pasirinkta programa R.
+\newpage
+
+#Japonijos ekonomika
+
+##Istorija
+###Meidži laikotarpis
+Meidži laikotarpis - Japonijos istorijos laikotarpis 1868-1912m., kurio metu šalį valdė imperatorius Macuchito. Šiuo laikotarpiu Japonija išgyveno industrinę revoliuciją, kuri pirmiausia palietė tekstilės pramonę. Pradėti masiškai statyti geležinkeliai, tiesiamos naujos telegrafo linijos, statomi fabrikai. Meidži laikotarpiu šalis siuntė gabiausią savo šalies jaunimą studijuoti į vakarus (JAV ir Europą), bandė perimti vakarietišką švietimo modelį bei samdė per 3000-ius svetimšalių, kurie mokė modernių mokslų, matematikos, technologijų ir užsienio kalbų. Vienas svarbiausių pasiekimų - feodalinės sistemos suardymas - valstiečiams leista išsipirkti žemę už nominalią kainą, o vėliau ją ir parduoti, taip pat valstiečiams suteiktos geros sąlygos išsilavinimui įgyti, kas ir sudarė sąlygas sparčiam industrinio sektoriaus augimui. Prie spartaus ekonomikos augimo prisidėjo ir valstybės greitai integruota kapitalistinė sistema. Japonijos valdžia nusprendė perimti vakarietišką (Prūsišką) modelį - užimti svarbią rolę planuojant, kas gaminama privačiame sektoriuje ir perskirstyti kapitalą per finansų rinkos kontrolę. Taip pat Meidži laikotarpiu sutvarkyta iki tol chaotiškai veikusi Japonijos bankų sistema ir 1882m. įkurtas centrinis bankas bei 1897m. prisijugta prie tarptautinio aukso standarto. Vakarietiško kapitalizmo sujungimas su sparčiu technologiniu tobulėjimu bei šio derinio pritaikymas karinėje sferoje XXa. pradžioje pavertė Japoniją ekonomine ir karine prasme galinga valstybe [@ColumbiaUniversity]
+```{r, echo=FALSE}
+if(!require(tidyverse)) install.packages("tidyverse")
+require(tidyverse)
+if(!require(httr)) install.packages("httr")
+require(httr)
+```
+```{r,echo=FALSE,dev="pdf", dev.args=list(encoding="CP1257.enc"), fig.cap="BVP dalis žmogui Meidži laikotarpiu"}
+meiji<- read.csv("/Users/Tomas/Downloads/maddison-data-gdp-per-capita-in-2011us.csv", header=TRUE, sep=",")
+meiji<- filter(meiji, Entity=="Japan")
+meiji<- rename(meiji, gdp=GDP.per.capita..int........)
+meiji<- filter(meiji, Year>="1868", Year<="1912")
+ggplot(meiji, aes(Year, gdp))+
+        geom_line()+
+        geom_smooth(method="lm")+
+        geom_point()+
+        labs(x="Metai", y="BVP/Gyventojui", title="BVP dalis vienam gyventojui Meidzi valdymo laikotarpiu", subtitle="Duomenų šaltinis:Max Roser (2019) - Economic Growth")
+
+```
+
+\newpage
+
+
+###Pirmas pasaulinis karas
+Prasidėjus pirmajam pasauliniui karui, jo padariniai Japonijos ekonomikai aiškūs nebuvo. Pasaulinis karas sustabdė pasaulinę prekybą. Kadangi karo židinys įsiplieskė Europoje ir didžiausi mūšiai vyko būtent ten, Europa nebegalėjo pasauliui tiekti tekstilės, stambiosios pramonės mašinų ir chemikalų, o būtent šių gėrybių paklausa pasaulinėje rinkoje beprotiškai kilo [@yoshino2014analysis]. Greitai pasidarė aišku, jog paklausai kylant, Japonijos ekonomika iš to gaus naudą. Paklausa iš Europos slinkosi Japonijos ir JAV link. Prasidėjo staigus Japonijos prekybos kilimas *(žr.pav.2)*. Nors Japoniškos prekės tuo metu dar nebuvo tokios kokybės kaip Europietiškos, tačiau karo metu sparčiai tobulėjo ir tapo visaverčiu pakaitalu.
+```{r, echo=FALSE}
+if(!require(tidyverse)) install.packages("tidyverse")
+require(tidyverse)
+if(!require(httr)) install.packages("httr")
+require(httr)
+```
+
+```{r,echo=FALSE,dev="pdf", dev.args=list(encoding="CP1257.enc"), fig.cap="Japonijos eksportas Pirmo pasaulinio karo metu."}
+export<- c(458, 447,527,632,591,708,1127,1602, 1962)
+time<-c(1910:1918)
+expww1<-data.frame(time, export)
+expww1$time<-as.character(expww1$time)
+ggplot(expww1, aes(time, export, group=1))+
+        geom_line()+
+        geom_point()+
+        labs(x="Metai", y="Eksportas mln.jenu", title="Japonijos eksportas 1910-1918m.", subtitle="Duomenų šaltinis: FRED (Federal Reserve Bank Economics Data)")+
+        scale_y_continuous(breaks = seq(min(expww1$export), max(expww1$export), by = 100))
+```
+
+###Antras pasaulinis karas
+XXa. 3-čiame dešimtmetyje kilusi Didžioji depresija Japonijos ekonomikos skaudžiai nepaveikė, šalies BPV toliau augo vidutinišku 5proc. per metus greičiu, tačiau šalies viduje kilo neramumu. Sekant tendencijas vakarų Europoje, Japonijoje pradėjo kilti fašistiniai judėjimai, šalies politinė valdžia išgyveno nesėkmingą karinio perversmo bandymą, norėta sunaikinti partijomis grindžiamą politinę sistemą ir šalį vėl sutelkti į imperatoriaus rankas. 1937m. prasidėjęs karas tarp Japonijos ir Kinijos galutinai įtvirtino suirutę, piliečiai masiškai mobilizuoti karui, o valdžią pamažu perėmė kariuomenė. Siekiant karinių tikslų, Japonijos ekonomika buvo verčiama į planinę. Nors daugelis verslų Japonijoje išliko privatūs, tačiau juos užgulė smarki valstybės reguliacija ir liepimas prisidėti prie karo [@yoshino2014analysis]. Valstybės prioritetą teikė karinių prekių gamybos maksimizavimui, ko pasekoje nukentėjo kitos pramonės šakos. Tekstilės pramonė, iki tol pirmavusi pramonės šaka, buvo praktiškai sunaikinta, žmonės gyveno be naujos avalynės ar rūbų pasiūlos. Metalo atsargos nebebuvo tiekiamos kitom sritims, išskyrus karybą. Sparčiai augusios karinės išlaidos 1944m. pasiekė 98,94proc BVP ribą *(žr.pav.3)* Resursų trūkumas skatino Japonijos ekspancinę politiką, pradėtos užiminėti teritorijos pietryčių Azijoje, o tai supykdė JAV, kuri paskelbė naftos embargą. Tai buvo viena iš kertinių priežasčių, pradėjusių karą tarp JAV ir Japonijos, kuris baigėsi pastarosios pralaimėjimu. Pagrindiniai pralaimėjimą lėmę ekonominiai veiksniai buvo išteklių ir energijos trūkumas.\newpage Japonija paprasčiausiai nebeturėjo iš ko gaminti naujos karinės įrangos, o jos ekonomika po antro pasaulinio karo išgyveno gilų nuosmukį.
+```{r, echo=FALSE}
+cat('\n\n')
+cat('\n\n')
+```
+```{r,echo=FALSE,dev="pdf", dev.args=list(encoding="CP1257.enc"), fig.height=3.5, fig.cap="Karinės išlaidos 1930-1945m."}
+ww2<- read.csv("/Users/Tomas/Downloads/military-expenditure-as-a-share-of-gdp.csv", header=TRUE, sep=",")
+ww2<- rename(ww2, expenditure=Military.expenditure.as.a.share.of.GDP..OWID.calculated.based.on.NMC..COW...SIPRI..2017......)
+ww2<- filter(ww2, Entity=="Japan" | Code=="USA" | Entity=="United Kingdom")
+ww2<- filter(ww2, Year>="1930" & Year<="1945")
+ggplot(ww2, aes(Year, expenditure))+
+        geom_line(aes(col=Entity))+
+        geom_point()+
+        scale_y_continuous(breaks = seq(0, max(ww2$expenditure), by = 10))+
+        scale_x_continuous(breaks = seq(min(ww2$Year), max(ww2$Year), by = 1))+
+        theme(axis.text.x = element_text(face="bold",  size=8, angle=90))+
+        labs(title="Japonijos, JAV ir D.Britanijos karinės išlaidos % nuo BVP \n1930-1945m.",
+             subtitle="Duomenų šaltinis: Max Roser and Mohamed Nagdy (2019) - Military Spending.",
+             x="Metai", y="Karinės išlaidos, % nuo BVP", color="Valstybės")+
+        theme(legend.position="bottom")
+
+```
+
+
+###Pokaris-XXa.pabaiga
+
+Po 2-ojo pasaulinio karo, Rytų Azija buvo vienintelis pasaulio regionas, kuris išgyveno ekonomikos augimą ir nei viena kita šalis nepasiekė tokios sekmės kaip Japonija, kurios BVP vienam gyventojui netruko dideliais tempais pralenkti pasaulio vidurkio *(žr.pav.4)*. Japonijos ekonomika, nuo 5 dešimtmečio vidurio iki 1973m. naftos krizės, augo vidutiniškai 10proc. kasmet (@ellington2004learning). Žinoma, neapsieita ir be nesklandumų: karo metu buvusi uždara, planinio tipo ekonomika turėjo vėl grįžti į rinką, tačiau toks sugrįžimas turėjo vykti palengva - valstybė subsidijavo privatų sektorių ir reguliavo kainas. Kilo nedarbo lygis, prasidėjo maisto trūkumas. Reikėjo atstatyti karo metu sugriautą pramonę, energetikos sektorių. Norėdama finansuoti privatų sektorių, Japonijos valdžia spausdino pinigus ir tuo pačiu metu kontroliavo kainas. Fiskalinio deficito finansavimas pasitelkiant skatinamąją monetarinę politiką iššaukė milžinišką infliaciją. Užsienio prekyba buvo stipriai kontroliuojama, kiekvienai prekei galiojo atskiras jenos/dolerio kursas. Tačiau Japonija sugebėjo atsitiesti.
+Pagrindinės spartaus ekonominio augimo priežastys:
+
+**1.** Valstybės remiamas kapitalizmas.
+Japonija atmetė laissez-faire laisvos rinkos modelį, kai rinka sprendžia, ko ir kiek gaminti, o ekonomika priimta kaip sritis, tarnaujanti ne individui, o visai valstybei. Tokia valstybės kontrolė jau prieš antrąjį pasaulinį karą pavertė Japoniją pasauline lydere aliuminio, laivų statybos ir viskozės rinkose (@ellington2004learning). Pokaryje valstybė tęsė kai kurių industrijų apsaugą ir skatinimą bei stengėsi mažinti konkurenciją, kurią kėlė užsienio ir net kai kurie vidaus verslai, tam pasitelkiant tarifus ar aplinkos ir kitokius produkcijos reguliavimus.
+
+**2.** Pasitelkti nauji politiniai įrankiai:
+
+* Kapitalo kontrolė
+* Mokestinės lengvatos tam tikroms industrinėms šakoms
+* Japonijos plėtros banko įkurimas
+
+**3.** Nustatytas stabilus, fiksuotas Jenos/Dolerio kursas (360/1), tai apribojo monetarinę politiką.
+
+**4.** Investicijos į švietimą. 1952m. pradėti nauji judėjimai prieš švietimo sistemą. Pokario vaikų gimstamumo sprogimas ("Baby boom") ir ekonomikos stagnacija reikalavo švietimo sistemos peržiūros. Edukacinė sistema susiejo Japonijos kultūrą, nauja demokratinę ideologiją ir atliepė pramonės šakų reikalavimus. Atstatytos po karo prarastos mokyklos ir suteiktas šansas didesniam kiekiui vaikų siekti geresnio išsilavinimo. Nuo pokario iki 1980m. mokinių skaičius padidėjo per 80proc., 99.98proc. baigė privalomąjį švietimo kursą, o 94.2proc. rinkosi mokytis toliau [@beauchamp1987development].  Tai suteikė daug išsilavinusios darbo jėgos atsinaujinančiai Japonijos pramonei. 
+
+**5.** Mažiau priklausomų pramonės šakų akcentavimas.
+Iki ekonominių reformų, daugelis lyderiaujančių Japonijos pramonės šakų (pvz. tekstilė) buvo priklausomos nuo neapdorotų gamtinių išteklių ir jų importo, todėl pradėta skatinti kitas šakas, pavyzdžiui mašinų gamybą, kurios nebuvo tokios priklausomos nuo importo, todėl eksportas tapo pigesnis. Taip pat sparčiau augantiems pramonės sektoriams buvo suteikiamos mokestinės lengvatos.
+
+**6.** Žmonių pasitikėjimas bankine sistema ir didelis privatus taupymas. 
+Didelis privataus taupymo reitingas sumažino paskolų palūkanas, tai lėmė didesnį finansavimą verslams ir sparčia jų plėtrą.
+
+**7.** Stabili politinė situacija. 
+Nuo 1955m. Japonijos politinę valdžią laiko viena ir ta pati partija - Liberali demokratų partija. Tai užtikrina politinių reformų tęstinumą, tvarumą, leidžia prognozuoti politinę ir ekonominę situaciją šalyje. 
+
+**8.** Korėjos karas. 
+Masiniai amerikiečių prekių ir paslaugų pirkimai, sudarę 4 milijardus JAV dolerių, suteikė didžiulį stimulą Japonijos ekonomikai [@karan2005japan].
+  
+  
+```{r, echo=FALSE}
+cat('\n\n')
+cat('\n\n')
+```
+```{r,echo=FALSE,dev="pdf", dev.args=list(encoding="CP1257.enc"), fig.height=3.5, fig.cap="BVP dalis vienam žmogui 1945-1973m."}
+gdp<- read.csv("/Users/Tomas/Downloads/maddison-data-gdp-per-capita-in-2011us.csv", header=TRUE, sep=",")
+world<-gdp
+gdp<- filter(gdp, Entity=="Japan")
+gdp<- rename(gdp, gdp=GDP.per.capita..int........)
+gdp<- filter(gdp, Year>="1945" & Year<="1973")
+world<- rename(world, gdp=GDP.per.capita..int........)
+world<- filter(world, Year>="1945" & Year<="1973")
+world_grp<-group_by(world, Year)
+vidurkis<- summarise(world_grp, mean(gdp))
+gdp<-right_join(gdp, vidurkis, by="Year")
+gdp<-rename(gdp, vidurkis='mean(gdp)')
+ggplot(gdp,aes(x=Year))+
+        geom_line(aes(y=vidurkis, colour="Pasaulio vidurkis"))+
+        geom_line(aes(y=gdp,colour="Japonija"))+
+scale_x_continuous(breaks = seq(min(gdp$Year), max(gdp$Year), by = 1))+
+        theme(axis.text.x = element_text(face="bold",  size=8, angle=90))+
+        scale_y_continuous(breaks = seq(1500, 15500, by = 1000))+
+        labs(x="Metai", y="BVP/Gyventojui", title="BVP dalis vienam gyventojui Japonijoje ir pasaulyje 1945-1973m",
+             subtitle="Duomenų šaltinis:Max Roser (2019) - Economic Growth")+
+        theme(legend.position="bottom")+
+        theme(legend.title = element_blank())
+```
+
+##Ekonominės problemos XXa.pabaigoje-XXIa.
+Suprantama, jog toks intensyvus ekonomikos augimas negali tęstis amžinai. Pagrindinė pamoka, kurią būtina išmokti iš Japonijos pavyzdžio - aplinkybės keičiasi labai sparčiai ir jeigu sistema prie pokyčių neprisitaiko, ekonomika ir ekonominė gyvenimo kokybė aiškiai nukentės. Taip ir atsitiko su Japonijos valstybės kontroliuojamu kapitalizmo modeliu [@ellington2004learning]. Japonijos ekonomikos stagnacija vadinama prarastuoju dvidešimtmečiu (1990-2010m.). Pirmasis smūgis buvo suduotas 1973m. per naftos krizę. Iki tol naftos kainos buvo stabiliai žemos, tačiau 1973m. rudenį OPEC (Tarptautinė organizacija, jungianti naftą eksportuojančias valstybes) nusprendė pakelti naftos kainą nuo 2 iki 11$ už barelį, o 1979 iki 30dolerių. Japonijos pramonės priklausymo nuo užsienietiškos naftos reitingas buvo 99.7proc. Prasidėjo spartus kainų kilimas, žmonės, norėdami užsitikrinti pirmo būtinumo prekių, pradėjo šluoti parduotuvių lentynas. Prasidėjo prekių deficitas. Japnoija pirmą kartą nuo antro pasaulinio karo užfiksavo neigiamą (-1.3proc) ekonomikos augimą [@ellington2004learning]. Prasidėjo "Stagfliacija" - recesijos ir milžiniškos infliacijos laikotarpis. Matome, jog Infliacija po 1973m. krizės pakilo iki 23,22proc, tuo pačiu metu ekonomika patyrė neigiamą prieaugį *(žr.pav.5)*.  
+```{r, echo=FALSE}
+cat('\n\n')
+cat('\n\n')
+```
+```{r,echo=FALSE,dev="pdf", dev.args=list(encoding="CP1257.enc"), fig.height=3.5, fig.cap="Stagfliacijos laikotarpis", results=FALSE}
+if(!require(tidyverse)) install.packages("tidyverse")
+require(tidyverse)
+if(!require(httr)) install.packages("httr")
+require(httr)
+url<-"https://drive.google.com/uc?export=download&id=1bHrvaHihIRJ0ZWUAkIKX45ku4_ymznq4"
+GET(url, write_disk(tf <- tempfile(fileext = ".csv")))
+Data<- read.csv(tf, sep = ",", header=TRUE)
+Data<- rename(Data, inflation=FPCPITOTLZGJPN)
+Data$DATE<-as.character(Data$DATE)
+Data$DATE = as.Date(Data$DATE, "%Y-%m-%d")
+Data$DATE = as.numeric(format(Data$DATE, "%Y"))
+Data <- filter(Data, DATE>="1970" & DATE<="1980")
+DATE <- c(1970:1980)
+growth<- c(0.3991,4.699,8.4135,8.0326,-1.2252,3.0916,3.975,4.3903,5.2719,5.484,2.8176)
+gddp<-data.frame(DATE, growth)
+Data<- right_join(Data, gddp, by="DATE")
+ggplot(Data)+
+        geom_line(aes(DATE,inflation, group=1, color="Infliacija"))+
+        geom_line(aes(DATE, growth, group=1, color="BVP prieaugis"))+
+        scale_x_continuous(breaks = seq(1970, 1980, by = 1))+
+        geom_point(aes(DATE,inflation))+
+        geom_point(aes(DATE,growth))+
+        labs(x="Metai", y="Infliacijos lygis (%)", title="Infliacija ir BVP prieaugis stagfliacijos laikotarpiu",
+             subtitle = "Duomenų šaltinis: World Bank")+
+        theme(axis.text.x = element_text(face="bold",  size=8, angle=90))+
+        scale_y_continuous(sec.axis = sec_axis(~.*1, name = "BVP prieaugis (%)", breaks = seq(0,20,2)))+
+        theme(legend.position="bottom")+
+        theme(legend.title = element_blank())
+```
+```{r, echo=FALSE}
+cat('\n\n')
+cat('\n\n')
+```
+Tačiau galime pastebėti, jog infliacija iki naftos krizės taip pat buvo aukšta ir viršijo 5proc. ribą, kurios priežastys slypėjo Japonijos nacionalinio banko valiutos kursų intervencijoje, kurios metu buvo siekiama padėti doleriui ir jenai išlaikyti stabilų kursą (Perkami doleriai už juos keičiant jenas) bei vyriausybės vykdytoje ekspansinėje fiskalinėje politikoje, kai vyriausybė paskelbė investuojanti masines pinigų sumas, gautas išleidus valstybines obligacijas (10, o vėliau ir trumpesniam metų skaičiui),  į greitkelių ir geležinkelių statybas, siekiant sujungti tolimesnius rajonus su pagrindiniais miestais. Valstybės skola pradėjo augti. [@ellington2004learning]. 9-ajame dešimtmetyje nuspręsta laikytis griežtesnės fiskalinės drausmės ir konsoliduoti biudžetą. Tai padaryta mažinant vyriausybės išlaidas nedidinant mokesčių, mažinant sveikatos apsaugos kaštus.  
+Ekonominis augimas iššaukė akcijų ir žemės kainų kilimą. Edukuota Japonijos visuomenė pradėjo spekuliuoti akcijų biržose. Kylančios kainos turto rinkoje privertė pradeti ribojamąją monetarinę politiką. Tarp 1981m. ir 1989m. kainos turto rinkoje išaugo 5-is kartus. 1989m. pabaigoje sprogo turto kainų burbulas, akcijų rinka per tris metus susitraukė 63procentais *(žr.pav.6)*, nekilnojamo turto burbulas sprogo *žr.pav.7*,ekonomikos augimo tempai sustojo, kilo nedarbas, prasidėjo krizė. [@karan2005japan].
+```{r, echo=FALSE}
+cat('\n\n')
+cat('\n\n')
+```
+```{r,echo=FALSE,dev="pdf", dev.args=list(encoding="CP1257.enc"), fig.height=3, fig.cap="Akcijų rinkos kapitalizacija", results=FALSE}
+capitalization<-c(30.576,33.82,35.324,40.442,46.09,57.5182,76.485,96.865,113.826,129.381,113.3,87.41, 70.99, 62.22, 68.97, 68.35, 62.97)
+Year<-(1980:1996)
+kapitalizacija<-data.frame(Year,capitalization)
+ggplot(kapitalizacija,aes(Year, capitalization))+
+        geom_line()+
+        geom_point(col = ifelse(kapitalizacija$Year > 1989, "red", "black"), size = 2)+
+        labs(x="Metai", y="Kapitalizacija % nuo BVP", title="Akcijų rinkos kapitalizacija % nuo BVP", subtitle="Duomenų šaltinis: tradingeconomics.com")+
+        scale_x_continuous(breaks = seq(1980, 1996, by = 1))+
+        theme(axis.text.x = element_text(face="bold",  size=8, angle=90))+
+        geom_vline(xintercept=1989, color="red")
+```
+```{r, echo=FALSE}
+cat('\n\n')
+cat('\n\n')
+```
+
+
+
+```{r,echo=FALSE,dev="pdf", dev.args=list(encoding="CP1257.enc"), fig.height=3, fig.cap="Būsto kainų indeksas", results=FALSE}
+bustas<- read.csv("/Users/Tomas/Downloads/QJPN368BIS.csv", header=TRUE, sep=",")
+bustas$DATE<-as.character(bustas$DATE)
+bustas$DATE = as.Date(bustas$DATE, "%Y-%m-%d")
+bustas$DATE = as.numeric(format(bustas$DATE, "%Y"))
+bustas <- filter(bustas, DATE>="1989")
+bustas <- rename(bustas, kaina=QJPN368BIS_NBD19900101)
+bustas$kaina<- as.numeric(sub(",", ".", bustas$kaina, fixed=T))
+bustas <- na.omit(bustas)
+bustas[2,2]=100
+ggplot(bustas)+
+        geom_line(aes(DATE,kaina, group=1))+
+        geom_point(aes(DATE,kaina))+
+        labs(x="Metai", y="Kainos indeksas", title="Būsto kainų Japonijoje indeksas 1990-2019m.\n(Baziniai metai - 1990).",
+             subtitle = "Duomenų šaltinis:Bank for International Settlements, Residential Property Prices for Japan [QJPN368BIS]")+
+        scale_x_continuous(breaks = seq(1990, 2019, by = 1))+
+        theme(axis.text.x = element_text(face="bold",  size=8, angle=90))+
+        geom_hline(yintercept=0)
+```
+
+
+```{r, echo=FALSE}
+cat('\n\n')
+cat('\n\n')
+```
+  
+Prasidėjus krizei, Japonijoje prasidėjo ekonominio sulėtėjimo/recesijos ir defliacijos/žemos infliacijos laikotarpis *(žr.pav.8)((Grafike vertikali linija žymi 2012m. S.Abe atėjimą į valdžią, horizantali linija žymi 0proc. infliacijos ribą, defliaciniai taškai pažymėti raudona spalva))*. Defliacijos metu verslas pradėjo mažinti ir lėtinti investicijas, o namų ūkiai susilaikė nuo didesnių pirkinių, laukdami, kol kris kainos. Verslas ir vartotojai savo investicinius portfelius išskaidė į saugesnius, mažesnės rizikos investicinius elementus - valiutas, indėlius ir valstybines obligacijas [@botman2015can].
+```{r, echo=FALSE}
+cat('\n\n')
+cat('\n\n')
+```
+```{r,echo=FALSE,dev="pdf", dev.args=list(encoding="CP1257.enc"), fig.height=3, fig.cap="Infliacijos lygis", results=FALSE}
+if(!require(tidyverse)) install.packages("tidyverse")
+require(tidyverse)
+if(!require(httr)) install.packages("httr")
+require(httr)
+url<-"https://drive.google.com/uc?export=download&id=1bHrvaHihIRJ0ZWUAkIKX45ku4_ymznq4"
+GET(url, write_disk(tf <- tempfile(fileext = ".csv")))
+data<- read.csv(tf, sep = ",", header=TRUE)
+data<- rename(data, inflation=FPCPITOTLZGJPN)
+data$DATE<-as.character(data$DATE)
+data$DATE = as.Date(data$DATE, "%Y-%m-%d")
+data$DATE = as.numeric(format(data$DATE, "%Y"))
+ggplot(data, aes(DATE, inflation, group=1))+
+        geom_line()+
+        geom_point(col = ifelse(data$inflation < 0, "red", "black"), size = 2)+
+        scale_x_continuous(breaks = seq(min(data$DATE), max(data$DATE), by = 2))+
+        labs(x="Metai", y="Infliacijos lygis (%)", title="Japonijos infliacijos lygis 1960-2018m.",
+             subtitle = "Duomenu saltinis: FRED (Federal Reserve Bank Economics Data)")+
+        geom_hline(yintercept = 0, linetype="dotted")+
+        geom_vline(xintercept = 2012, linetype="dotted")+
+        theme(axis.text.x = element_text(face="bold",  size=8, angle=90))
+
+```
+```{r, echo=FALSE}
+cat('\n\n')
+cat('\n\n')
+```
+  
+Prasidėjusi globalizacija paveikė pasaulinę prekybos rinką, išaugo konkurencija. Norint konkuruoti su užsieniu, įmonėms reikia greitų sprendimų, nors Japonijos vyriausybė ir mažino verslo reguliaciją, tačiau ekonominė sistema vis tiek buvo nelanksti. Pučiantis ekonominiam burbului 9-ame dešimtmetyje, šalies bankai išdavė daug paskolų neproduktyviom įmonėm, kurios jų negrąžina taip užkirsdamos kelią naujesnių įmonių finansavimui [@ellington2004learning]. Demografinė situacija šalyje taip pat tendencingai blogėjo, kadangi prasidėjo spartu visuomenės senėjimas ir  bendras populiacijos mažėjimas. Per paskutinius 30metų, gyventojų amžiaus mediana padidėjo 11.1metų, o iki 2050m. ji padidės dar 6.3metų ir sieks 54.7metus *(žr.lentelę)*.
+```{r, echo=FALSE}
+cat('\n\n')
+cat('\n\n')
+```
+```{r,echo=FALSE,fig.cap="Japonijos populiacija ir jos projekcija"}
+library(knitr)
+Metai<-c(1990, 1995,2000,2005,2010,2015:2019, 2020, 2025, 2030, 2035,2040, 2050)
+Populiacija_Milijonai <- c(124.51, 126.37, 127.52, 128.33, 128.54, 127.99, 127.76, 127.5, 127.2, 126.86,
+                 126.48,123.98,120.76,117.17,113.36, 105.8)        
+Mediana<-c(37.3,39.4,41.2,43,44.7,46.4,46.7,46.7,46.7,46.7,48.4, 50.5,52.1,53.3,54.1,54.7)
+Gyventojai<-data.frame(Metai,Populiacija_Milijonai,Mediana)
+kable(Gyventojai)
+```
+```{r, echo=FALSE}
+cat('\n\n')
+cat('\n\n')
+``` 
+  
+#Abenomika
+
+##Pradžia ir sąvoka
+2007m JAV didelės rizikos paskolų rinkoje prasidėjo, o 2008m. Lehman Brothers investicinio banko bankrotu galutinai įsižiebė globali ekonominė krizė, kuri apėmė visą pasaulį neaplenkdama ir Japonijos. 2011metais Japoniją sukrėtė žemės drebėjimas ir cunamis. Japonijos biudžeto deficito/BVP reitingas 2010m. pakilo 200proc. daugiausiai vyriausybės išlaidų finansuojant pensijinius fondus[@yoshino2014analysis]. Ekonomika išgyveno defliaciją, kainos krito, įmonės kasmet uždirbo mažiau, bankrutavo, žmonės pradėjo leisti mažiau pinigų, todėl verslas kentėjo dar labiau. 2013m. Japonijos nominalus BVP buvo 6procentais mažesnis negu 1990m [@botman2015can]. Japonijos vyriausybei reikėjo suvaldyti defliaciją bei duoti ekonomikai stimulą, kuris ištrauktų ją iš stagnacijos. 
+2012m. Japonijoje rinkimus laimėjo Liberalų Demokratų partija ir ministru pirmininku paskyrė Shinzo Abe.  
+**Abenomika** - S.Abe vykdoma ekonominė politika, kuri turi tris pagrindines kryptis [@de2016raising]:
+
+* Agresyvi, skatinamoji monetarinė politika.
+* Fiskalinė konsolidacija
+* Struktūrinės augimo reformos.
+
+##Abenomikos kryptys ir poveikis.
+###Monetarinė politika
+2013m. Japonijos centrinis bankas, kartu su vyriausybe, paskelbė, jog, siekiant suvaldyti defliaciją, pradedama vykdyti agresyvi monetarinė politika bei nustatytas siekiamas infliacijos lygis - 2proc. Japonijos bankas, siekdamas šio tikslo, pirko ilgalaikes valstybės obligacijas ir didino monetarinę bazę, priešingai nei anksčiau vykdytos skatinamosios monetarinės politikos, kurios koncentravosi į trumpalaikių valstybės obligacijų pirkimą [@yoshino2014analysis]. Taip pat pradėta investuoti į Japonijos akcijų biržą. Centrinio banko turtas nuo 2012m. padidėjo 369% *(žr.pav.9)*. Skatinamoji monetarinė politika turėjo palaikyti nulinę realiąją palūkanų normą ilguoju laikotarpiu ir didinti grynąją vidaus paklausą.
+```{r, echo=FALSE}
+cat('\n\n')
+``` 
+```{r,echo=FALSE,dev="pdf", dev.args=list(encoding="CP1257.enc"), fig.height=3, fig.cap="Centrinio banko turtas", results=FALSE}
+assets <- read.csv("/Users/Tomas/Downloads/JPNASSETS.csv", header=TRUE, sep=",")
+assets$DATE<-as.character(assets$DATE)
+assets$DATE = as.Date(assets$DATE, "%Y-%m-%d")
+assets$DATE = as.numeric(format(assets$DATE, "%Y"))
+assets$JPNASSETS<- as.numeric(sub(",", ".", assets$JPNASSETS, fixed=T))
+assets<-filter(assets, DATE<"2019"&DATE>"1999")
+assets$JPNASSETS<-assets$JPNASSETS/10
+ggplot(assets, aes(DATE, JPNASSETS/10, group=1))+
+        geom_line()+
+        geom_point()+
+        labs(x="Metai", y="Turtas, mlrd.Jenų", title="Japonijos centrinio banko turtas 2000-2018m. (mlrd.Jenų).",
+             subtitle="Duomenų šaltinis: Bank of Japan")+
+        geom_vline(xintercept = 2012, linetype="dotted")+
+        scale_x_continuous(breaks = seq(200, 2018, by = 2))+
+        theme(axis.text.x = element_text(face="bold",  size=8, angle=90))
+```
+```{r, echo=FALSE}
+cat('\n\n')
+cat('\n\n')
+``` 
+```{r, echo=FALSE}
+cat('\n\n')
+cat('\n\n')
+``` 
+  
+*Ar monetarinei politikai pavyko pasiekti savo tikslų?*  
+Atsakymas nevienareikšmiškas. Pažvelgę į infliacijos grafiką *(žr.pav.8)*, matome, jog 2012-2014metais infliacija kilo, tačiau 2014-2016m. ir vėl krito bei grįžo į žemesnę už 0 reikšmę. 2016-2018m. periode infliacija kilo ir siekė apie 1proc., tačiau pažvelgę į naujausius duomenis *(žr.pav.10)* matome, jog infliacija vėl krenta bei yra toli nuo užsibrėžto 2proc. tikslo. 
+```{r, echo=FALSE}
+cat('\n\n')
+cat('\n\n')
+``` 
+```{r, echo=FALSE}
+cat('\n\n')
+cat('\n\n')
+``` 
+```{r, echo=FALSE}
+cat('\n\n')
+cat('\n\n')
+``` 
+```{r, echo=FALSE}
+cat('\n\n')
+cat('\n\n')
+``` 
+```{r,echo=FALSE,dev="pdf", dev.args=list(encoding="CP1257.enc"), fig.height=3, fig.cap="2019 metų infliacija", results=FALSE}
+men<-c("Sausis","Vasaris","Kovas","Balandis","Geguzė","Birzelis","Liepa","Rugpjūtis","Rugsėjis","Spalis")
+infl<-c(0.2,0.2,0.5,0.9,0.7,0.7,0.5,0.3,0.2,0.2)
+i<-data.frame(men,infl)
+i$infl<-as.numeric(i$infl)
+i$men<- as.factor(i$men)
+i$men<- factor(i$men, levels=i$men)
+ggplot()+
+        geom_bar(data=i,
+                 aes(x=men, y=infl),  stat="identity", col="white", fill="steelblue")+
+        scale_y_continuous(breaks = seq(0, 2, by= 0.1))+
+        theme(axis.text.x = element_text(face="bold",  size=8, angle=90))+
+        labs(x="Mėnesis", y="Infliacija, %", title="2019 metų Japonijos infliacija (%)", subtitle="Duomenų šaltinis:Japan Statistics Bureau")
+```
+```{r, echo=FALSE}
+cat('\n\n')
+cat('\n\n')
+``` 
+  
+###Fiskalinė politika.
+Antroji abenomikos kryptis - fiskalinė konsolidacija. 2013 metais išleisto fiskalinės konsolidacijos plano tikslai - iki 2015m. per pus sumažinti valstybės biudžeto ir BVP santykį lyginant su 2010m, 2020m pasiekti pirminį perteklių ir toliau mažinti skolą [@miyazawa2015growth]. Japonijos vyriausybė jau anksčiau bandė pasiekti fiskalinę konsolidaciją, tačiau tam sutrukdydavo ekonomikai stimuliuoti reikalingos injekcijos. Japonijos skolos ir BVP santykis yra didžiausias tarp visų EBPO šalių, tačiau nepaisant to Japonijos ekonomika laikoma tvari. Palyginimui Graikijos skolos ir BVP santykis yra mažesnis už Japonijos, tačiau ši šalis 2012m. buvo ant bankroto ribos. Pagrindinis skirtumas tarp šių šalių yra tas, jog Japonijos skola yra 90proc. išlaikoma vietinių investuotojų, tuo tarpų Graikijoje - 70proc. užsienio investuotojų [@yoshino2014three].  Grafike matome Japonijos biudžeto ir BVP santykį, pagal duomenis ir pateiktą projekciją galime daryti išvadas, jog santykis stabiliai mažinamas, tačiau 2024m. vėl projektuojamas didėjimas. 2019m. siekiant sparčiau mažinti valstybės skolą, vartojimo mokestis pakeltas iki 10proc. 2015m. atliktais skaičiavimais (@miyazawa2015growth), norint pasiekti užsibrėžtų tikslų, vartojimo mokesčiai turi būti keliami daugiau už 10proc. 2024m. prognozuojamas biudžeto ir BVP santykio didėjimas remiasi prielaida, jog vartojimo mokestis, kaip ir kitos aplinkybės, išliks tokio pat dydžio, tačiau tuo pačiu metu visuomenė senės, reikės didesnio finansavimo sveikatos apsaugai ir pensijoms, ekonomikos augimo tempai nežinomi, o mokestinė politika gali pasisukti į bet kurią pusę, todėl tiksli prognozė tokiu laikotarpiu nėra įmanoma.
+
+```{r, echo=FALSE}
+cat('\n\n')
+cat('\n\n')
+``` 
+```{r,echo=FALSE,dev="pdf", dev.args=list(encoding="CP1257.enc"), fig.height=3, fig.cap="Biudžeto/BVP santykis ir projekcija", results=FALSE}
+Metai<-c(2014:2024)
+ratio<- c(-5.64,-3.81,-3.69,-3.17,-3.21,-2.95,-2.16,-1.95,-1.77,-1.78,-1.96)
+debt<-data.frame(Metai,ratio)
+debt$ratio<-as.numeric(debt$ratio)
+ggplot()+
+        geom_bar(data=debt,
+                 aes(x=Metai, y=ratio),  stat="identity", col="white", fill="steelblue")+
+        theme(axis.text.x = element_text(face="bold",  size=8, angle=90))+
+        scale_x_continuous(breaks=seq(2014,2024,1))+
+        labs(x="Metai", y="Biudzeto/BVP santykis (%)", title="Japonijos biudzeto ir BVP santykis (%) bei projekcija 2014-2024m.", subtitle="Duomenų šaltinis:Statista.com")+
+        geom_text(aes(x=Metai, y=ratio, label=ratio), vjust = -0.5, position = position_dodge(0.9))
+```
+```{r, echo=FALSE}
+cat('\n\n')
+cat('\n\n')
+``` 
+
+##Struktūrinės reformos
+Trečioji abenomikos kryptis - struktūrinės, augimą užtikrinančios reformos. Japonijos vyriausybė išsikėlė tikslą užtikrinti Japonijos verlo konkurencingumą ilguoju laikotarpiu, sumažinti energetinę priklausomybę, mažinti biurokratiją ir reguliacijas, sukurti inovacijomis grįstą augimo platformą [@yoshino2014analysis]. 10 pagrindinių strateginio augimo aspektų:
+
+* Vyriausybė skatins kompanijas didinti atlyginimus ir taip skatinti vidinį vartojimą.
+* Mokesčių didinimas, skirtas augančių socialinės apsaugos išlaidų finansavimui.
+* Valstybės deficito mažinimas, efektyvesnis valstybės finansų valdymas.
+* Kovojant su senėjimo problema, bandoma pensijinio amžiaus žmones integruoti į darbo rinką. Pasiekti didesnę moterų dalį darbo rinkoje, užtikrinant geresnę valstybinę vaikų priežiūrą.
+* Augant sveikatos apsaugos išlaidoms, valstybė vykdys kainų kontrolę sveikatos srityje. Sudaroma regioninė ligoninių sistema.
+* Stabilaus rezervo, skirto apsisaugojimui nuo nelaimių, užtikrinimas.
+* Valstybė užtikrins daugiau stipendijų studentams ir didins išlaidas moksliniams tyrimams ir plėtrai.
+* Valstybė užtikrins finansavimą senos infrastruktūros atnaujinimui.
+* Lengvai prieinamas finansavimas mažoms ir vidutinėms įmonėms.
+* Finansavimas žemės ūkio sektoriui siekiant didinti konkurencingumą.  
+Taip pat, kalbant apie strateginį augimą, būtina aptarti ir Japonijos visuomenės kultūrinį aspektą bei solidarizavimąsį su valstybe. Po ilgus metus trukusios stagnacijos, 2009m. finansų krizės, Japonijos piliečiai patys reiškia norą prisidėti prie valstybės atsigavimo. Toks piliečių noras ir finansavimo verslui reikalingumas iššaukė naują finansavimo formą - Gimtojo miesto investicinio pasitikėjimo fondas *(HIT - Hometown Investment Trust fund)*. Jo tikslas sujungti investuotojus su vietiniais startuoliais ir mažomis/vidutinėmis įmonėmis [@yoshino2014analysis]. Siekiant užtikrinti, jog vėl nesusidarys aukštos rizikos paskolų burbulas, o investuotojai gautų pilnavertę informaciją - HIT nusprendė taikyti visiško informacijos apsikeitimo tarp investuotojo ir įmonės principą. Kitas HIT privalumas yra tai, jog HIT suteikia įmonėms reikalingo  kapitalo. Tokių paskolų išdavimas banke trunka ilgą laiką, o tuo pačiu reikia atitikti daugybę reikalavimų.
+Kadangi Japonijos augimo strategija ilgalaikė - dar sunku pastebėti jos padarinius, tačiau iš grafiko *(žr.pav.11)* galime matyti, jog gamyba auga, todėl galime daryti išvadą, jog vyriausybės skatinamoji strategija, bent pastaruosius 6-is metus, pasitvirtina.  
+```{r, echo=FALSE}
+cat('\n\n')
+cat('\n\n')
+``` 
+```{r,echo=FALSE,dev="pdf", dev.args=list(encoding="CP1257.enc"), fig.height=3, fig.cap="Pramoninės gamybos indeksas", results=FALSE}
+Year<-c(2012:2018)
+prod <- c(100, 101.4, 103.4, 102.8, 102.8, 105.9,107)
+production <- data.frame(Year, prod)
+production$prod <- as.numeric(production$prod)
+ggplot(production,aes(Year, prod))+
+        geom_line()+
+        geom_point()+
+        geom_smooth(method="lm")+
+        labs(x="Metai", y="Pramoninės gamybos indeksas", title="Pramoninės gamybos indeksas Japonijoje 2012-2018m. \n(Baziniai metai-2012)", subtitle="Industrial Production Index: Euromonitor International from UN/national statistics/Eurostat/OECD")+
+        scale_x_continuous(breaks=seq(2012,2018,1))+
+        theme(axis.text.x = element_text(face="bold",  size=8, angle=90))
+```
+
+#Išvados
+Japonijos ekonominiam stebuklui įtakos turėjo daug faktorių - investicijos į švietimą, valstybės remiamas kapitalizmo modelis, tikslingos investicijos į augančius pramonės sektorius, stabili politinė situacija ir t.t. Japonija tapo viena iš lyderiaujančių pasaulio ekonomikų ir tapo pavyzdžiu kitoms valstybėms. Neapsieita ir be sunkumų - finansų krizės, stichinės nelaimės, defliacija ir sustojęs augimas kėlė abejonių ekonominio valstybės galingumo tęstinumu. Tačiau Japonija sugeba atsitiesti, o pagrindinė to priežastis Ministro pirmininko S.Abe priimtas politinių sprendimų rinkinys, skirtas ekonomikos problemų likvidavimui - Abenomika ir jos trys kryptys - agresyvi monetarinė politika, fiskalinė konsolidacija ir struktūrinės augimo reformos. Abenomikos vertinimas gali būti apžvelgtas iš dviejų pusių - monetarinė politika infliacijos tikslo (2%) nepasiekė ir visdar laikosi pavojingu atstumu virš nulio, tačiau suvaldė defliaciją, fiskalinėje politikoje valstybės skola mažinama ir siekiama fiskalinės konsolidacijos, kol kas skola mažėja. Stuktūrinės reformos užtikrins tvarų ekonomikos augimą, sumažins visuomenės senėjimo įtaką, skatins valstybės konkurencingumą. Abenomika ir jos finansinės konsolidacijos bei stuktūrinės augimo reformos taikėsi į ilgąjį laikotarpį, todėl visavertiškai įvertinti pasekmes dar anksti.
+
+\newpage
+#Literatūros sąrašas
